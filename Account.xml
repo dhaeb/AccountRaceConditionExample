@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Account Balance="">
+  <Transaction Date="" Value="">
+    <Person Firstname="" Lastname=""/>
+  </Transaction>
+  
+  <Transaction Date="" Value="">
+    <Person Firstname="" Lastname="" />
+  </Transaction>
+  
+</Account>
