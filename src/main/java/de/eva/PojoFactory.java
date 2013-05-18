@@ -1,11 +1,10 @@
 package de.eva;
 
-import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.Vector;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -17,14 +16,14 @@ import de.eva.Account.Transaction.Person;
 public class PojoFactory {
 	
 	private static Calendar CALENDER_INSTANCE = GregorianCalendar.getInstance();
+	private static Person[] AVAILABLE_PERSONS = new Person[]{createPerson("Max", "Schwarz"), createPerson("Jane", "Doe"), createPerson("John", "Doe"), createPerson("Frank", "Dilbert")};
 
-	@SuppressWarnings("unchecked")
 	public static Account createAccount(double balence) {
 		Account returnable = new Account();
-		//Serialize List after every add method
-		returnable.transaction = (List<Transaction>) Proxy.newProxyInstance(List.class.getClassLoader(), 
-							   								new Class[]{List.class}, 
-							   								new AccountProxy(new ArrayList<Transaction>(), returnable));
+		//Race condition due to not threadsafe array list implementation
+		returnable.transaction = new ArrayList<Transaction>();
+		//vector is threadsafe 
+		returnable.transaction = new Vector<Transaction>();
 		returnable.balance = balence;
 		return returnable;
 	}
@@ -44,6 +43,15 @@ public class PojoFactory {
 		pers.setFirstname(firstName);
 		pers.setLastname(lastName);
 		return pers;
+	}
+	
+	public static Person createRandomPerson(){
+		int availablePersonCount = AVAILABLE_PERSONS.length;
+		return AVAILABLE_PERSONS[createRandomArrayIndex(availablePersonCount)]; 
+	}
+
+	private static int createRandomArrayIndex(int availablePersonCount) {
+		return (int) Math.floor((availablePersonCount - 0.0001d) * Math.random());
 	}
 	
 }

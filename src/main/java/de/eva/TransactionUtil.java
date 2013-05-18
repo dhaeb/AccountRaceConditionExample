@@ -6,7 +6,7 @@ import de.eva.Account.Transaction;
 import de.eva.Account.Transaction.Person;
 
 public class TransactionUtil {
-
+	
 	private Account account;
 	private double deposit;
 
@@ -15,7 +15,7 @@ public class TransactionUtil {
 		this.deposit = deposit;
 	}
 	
-	void executeTransaction(Person pers) {
+	public void executeTransaction(Person pers) {
 		Transaction transaction = PojoFactory.createTransaction(new Date().getTime(), 
 															    deposit, 
 															    pers);
